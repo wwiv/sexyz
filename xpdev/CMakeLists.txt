@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 2.8.11)
 INCLUDE (CheckIncludeFiles)
 INCLUDE (CheckFunctionExists)
 INCLUDE (FindThreads)
-INCLUDE (FindPkgConfig)
 
 set(SOURCE
     conwrap.c
@@ -37,9 +36,7 @@ if(NOT WIN32)
     list(APPEND SOURCE xpsem.c)
 endif()
 
-add_library(xpdev SHARED ${SOURCE})
-
-target_link_libraries(xpdev ${CMAKE_DL_LIBS})
+add_library(xpdev ${SOURCE})
 
 CHECK_INCLUDE_FILES(inttypes.h HAS_INTTYPES_H)
 if(HAS_INTTYPES_H)
@@ -51,8 +48,6 @@ if(HAS_STDINT_H)
 endif()
 target_compile_definitions(xpdev PUBLIC LINK_LIST_THREADSAFE)
 
-target_compile_definitions(xpdev PRIVATE WRAPPER_EXPORTS)
-target_compile_definitions(xpdev INTERFACE WRAPPER_IMPORTS)
 if(WIN32)
 	target_link_libraries(xpdev Iphlpapi Ws2_32 Winmm Netapi32)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Haiku")
@@ -85,5 +80,4 @@ if(HAS_SRANDOMDEV_FUNC)
 	target_compile_definitions(xpdev PRIVATE HAS_SRANDOMDEV_FUNC)
 endif()
 
-message(${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(xpdev INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

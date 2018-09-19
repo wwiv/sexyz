@@ -42,15 +42,14 @@
 #include <share.h>
 #include <process.h>	/* _beginthread() prototype */
 #include <direct.h>		/* _mkdir() prototype */
+#include <malloc.h>
 
 #if defined(_DEBUG) && defined(_MSC_VER)
 #include <crtdbg.h> /* Windows debug macros and stuff */
 #endif
 
 #elif defined(__unix__)		/* Unix-variant */
-
 #include <unistd.h>		/* close */
-
 #endif
 
 /******************/
@@ -64,13 +63,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef __unix__
-
-#include <malloc.h>
-
-#endif
-
 #include <sys/stat.h>
 
 /* xpdev */
@@ -80,14 +72,12 @@
 #include "filewrap.h"
 #include "sockwrap.h"
 
-
 // END includes copied from sbbs.h
 // Start of other things needed
 #define LOOP_NOPEN 50
 #define FNOPEN_BUF_SIZE (2*1024)
 #define mswait(x)              SLEEP(x)
 // END of other things needed
-
 
 #include "crc32.h"
 
